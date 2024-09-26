@@ -34,11 +34,16 @@ public class MortgageCalculatorSolution {
     static int numberOfPayments = 0;
 
     public static void main(String...args){
+        try{
+            getPrincipal();
+            getMonthlyInterest();
+            getNumberOfPayments();
+            calculateMortgage();
+        }
+        catch(InputMismatchException e){
+            System.out.println("Invalid input");
+        }
 
-        getPrincipal();
-        getMonthlyInterest();
-        getNumberOfPayments();
-        calculateMortgage();
     }
 
     public static int getPrincipal(){
@@ -46,63 +51,38 @@ public class MortgageCalculatorSolution {
         //How Could We Add The Error handling??
         while(true) {
             //The Scope Of variable principle should be declared outside the while block? Why?
-            try{
-                System.out.println("Principal:");
-                principal = scanner.nextInt();
-                if(principal>1000 && principal<=1_000_000)
-                    break;
-                System.out.println("Enter A Value Between 1000 and 1000000");
-            }
-            catch(InputMismatchException e){
-                System.out.println("Invalid input");
+            System.out.println("Principal:");
+            principal = scanner.nextInt();
+            if(principal>1000 && principal<=1_000_000)
                 break;
-            }
-
-
+            System.out.println("Enter A Value Between 1000 and 1000000");
         }
     return principal;
     }
 
     public static float getMonthlyInterest(){
         Scanner scanner=new Scanner(System.in);
-        try{
-            System.out.println("Annual Interest Rate:");
-            float annualInterestRate=scanner.nextFloat();
-            //We need to avoid any implicit value: 4,6 for code readability? Meaningfull & Descriptive Words
-            monthlyInterest=annualInterestRate/PERCENT/MONTHS_IN_YEAR;
-        }
-        catch(InputMismatchException e){
-            System.out.println("Invalid input");
-        }
+        System.out.println("Annual Interest Rate:");
+        float annualInterestRate=scanner.nextFloat();
+        //We need to avoid any implicit value: 4,6 for code readability? Meaningfull & Descriptive Words
+        monthlyInterest=annualInterestRate/PERCENT/MONTHS_IN_YEAR;
         return monthlyInterest;
     }
 
     public static int getNumberOfPayments() {
         //How can We Add The Error Handling Here?
-
-        try{
-            System.out.println("Period(Years):");
-            byte years=scanner.nextByte();
-            numberOfPayments=years*MONTHS_IN_YEAR;
-        }
-        catch (Exception e){
-            System.out.println("Invalid input");
-        }
+        System.out.println("Period(Years):");
+        byte years=scanner.nextByte();
+        numberOfPayments=years*MONTHS_IN_YEAR;
         return numberOfPayments;
     }
 
     public static double calculateMortgage() {
         //How can We Add The Error Handling Here?
         double mortgage=0.0;
-        try {
-            mortgage=principal*(monthlyInterest*Math.pow(1+monthlyInterest,numberOfPayments))/(Math.pow(1+monthlyInterest,numberOfPayments)-1);
-            String mortgageFormatted= NumberFormat.getCurrencyInstance().format(mortgage);
-            System.out.println("Mortgage:"+mortgageFormatted);
-
-        }
-        catch (Exception e){
-            System.out.println("Invalid input");
-        }
+        mortgage=principal*(monthlyInterest*Math.pow(1+monthlyInterest,numberOfPayments))/(Math.pow(1+monthlyInterest,numberOfPayments)-1);
+        String mortgageFormatted= NumberFormat.getCurrencyInstance().format(mortgage);
+        System.out.println("Mortgage:"+mortgageFormatted);
         return mortgage;
     }
 }
